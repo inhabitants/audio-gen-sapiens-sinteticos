@@ -1,4 +1,4 @@
-# Nano Banana (Open Source) 🍌
+# Audio Gen Sapins Sinteticos (Open Source) 🍌
 
 [![Built with Gemini 3](https://img.shields.io/badge/Built%20with-Gemini%203-blue?style=for-the-badge&logo=google-gemini)](https://ai.google.dev/)
 [![Powered by Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
@@ -105,4 +105,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-**Built with ❤️ for the Gemini 3 Hackathon.**
+**Built with ❤️ by [Sapiens Sinteticos](https://sapiensinteticos.com/).**

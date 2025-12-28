@@ -8,8 +8,6 @@
 
 Stop typing prompts. **Just say what you see.**
 
-![Project Demo](./public/demo-screenshot.png)
-
 ---
 
 ## 🚀 Hackathon Submission: Gemini 3 Integration

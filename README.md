@@ -107,4 +107,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-**Built with ❤️ for the Gemini 3 Hackathon.**
+**Built with ❤️ by [Sapiens Sinteticos](https://sapiensinteticos.com/).**

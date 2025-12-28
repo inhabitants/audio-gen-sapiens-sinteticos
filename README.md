@@ -9,7 +9,6 @@
 Stop typing prompts. **Just say what you see.**
 
 ![Project Demo](./public/demo-screenshot.png)
-*(Note: Please add a `demo-screenshot.png` to your public folder)*
 
 ---
 

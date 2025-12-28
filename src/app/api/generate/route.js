@@ -1,11 +1,9 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 // Simple in-memory rate limit (Reset on server restart/cold start)
-// In production, use Redis or Vercel KV
 const RATE_LIMIT = new Map();
 const WINDOW_MS = 60 * 60 * 1000; // 1 Hour
-const MAX_REQUESTS = 10; // 10 per hour per IP
+const MAX_REQUESTS = 50; // Increased for testing
 
 export async function POST(request) {
     try {
@@ -20,13 +18,14 @@ export async function POST(request) {
         }
 
         if (currentUsage.count >= MAX_REQUESTS) {
-            return NextResponse.json({ error: "Rate limit exceeded (10/hour)" }, { status: 429 });
+            return NextResponse.json({ error: "Rate limit exceeded (50/hour)" }, { status: 429 });
         }
 
         RATE_LIMIT.set(ip, { ...currentUsage, count: currentUsage.count + 1 });
 
         // ---
 
+        // 1. Read Body ONCE
         const formData = await request.formData();
         const prompt = formData.get("prompt");
         const aspectRatio = formData.get("aspectRatio") || "1:1";
@@ -35,42 +34,8 @@ export async function POST(request) {
             return NextResponse.json({ error: "Server Configuration Error: GEMINI_API_KEY missing" }, { status: 500 });
         }
 
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        // Using the model version specified by user
-        const model = genAI.getGenerativeModel({ model: "gemini-3-pro-image-preview" });
-
-        const result = await model.generateContent({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-                imageConfig: {
-                    aspectRatio: aspectRatio
-                }
-            }
-        });
-
-        const response = await result.response;
-        // Gemini image response structure may vary depending on SDK version, 
-        // but typically contains generated images in candidates or parts.
-        // Needs careful handling if SDK structure changes.
-        // Assuming current beta SDK behavior which returns parts with inlineData.
-
-        // Wait, standard `generateContent` for text returns text. 
-        // `imagen` (Gemini 3) might have specific structure. 
-        // Based on the original `route.js`, it used REST API manually. 
-        // I should stick to the manual fetch or check if SDK supports it.
-        // The SDK usage in original `route.js` was mixed (importing Class but using `fetch` for the actual call).
-        // Let's stick to the `fetch` implementation from the original to be safe with this specific model endpoint.
-
-    } catch (e) {
-        console.error(e);
-        return NextResponse.json({ error: e.message || "Generation Failed" }, { status: 500 });
-    }
-
-    // Fallback to fetch implementation if SDK doesn't support Image 3 preview comfortably involving keys/endpoints
-    try {
-        const prompt = (await request.formData()).get("prompt");
-        const aspectRatio = (await request.formData()).get("aspectRatio") || "1:1";
-
+        // 2. Direct REST Call to Gemini 3 Image Preview
+        // Using this explicitly as SDK support for "image-preview" endpoints can vary
         const apiKey = process.env.GEMINI_API_KEY;
         const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent?key=${apiKey}`;
 
@@ -86,23 +51,27 @@ export async function POST(request) {
         });
 
         if (!fetchRes.ok) {
-            const err = await fetchRes.text();
-            throw new Error(`Gemini API Error: ${err}`);
+            const errText = await fetchRes.text();
+            console.error("Gemini API Error Body:", errText);
+            throw new Error(`Gemini API Error (${fetchRes.status}): ${errText}`);
         }
 
         const data = await fetchRes.json();
-        // Extract base64
-        const candidates = data.candidates;
-        if (!candidates || !candidates.length) throw new Error("No candidates returned");
 
+        // 3. Extract Image
+        const candidates = data.candidates;
+        if (!candidates || !candidates.length) throw new Error("No candidates returned from Gemini");
+
+        // The image usually comes in 'inlineData' or similar field in the parts
         const imgPart = candidates[0].content.parts.find(p => p.inlineData);
-        if (!imgPart) throw new Error("No image data found in response");
+        if (!imgPart) throw new Error("No image data found in response parts. Response was: " + JSON.stringify(candidates[0].content.parts));
 
         const base64 = `data:${imgPart.inlineData.mimeType};base64,${imgPart.inlineData.data}`;
 
         return NextResponse.json({ imageUrl: base64 });
 
     } catch (e) {
-        return NextResponse.json({ error: e.message }, { status: 500 });
+        console.error("Route Error:", e);
+        return NextResponse.json({ error: e.message || "Generation Failed" }, { status: 500 });
     }
 }

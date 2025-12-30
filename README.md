@@ -4,11 +4,10 @@
 [![Powered by Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![ElevenLabs Voice](https://img.shields.io/badge/ElevenLabs-Voice%20AI-orange?style=for-the-badge)](https://elevenlabs.io/)
 
-**Nano Banana** is a next-generation, voice-controlled creative interface that lets you converse with an AI to generate stunning visuals in real-time. Built for the **Gemini 3 Global Hackathon**, it demonstrates the power of multimodal interaction by combining conversational voice agents with Google's latest image generation models.
+**Audio Gen Sapins Sinteticos** is a voice-controlled creative interface that lets you converse with an AI to generate stunning visuals in real-time. Built for the **Gemini 3 Global Hackathon**, it demonstrates the power of multimodal interaction by combining conversational voice agents with Google's latest image generation models.
 
 Stop typing prompts. **Just say what you see.**
 
-![Project Demo](./public/demo-screenshot.png)
 ---
 
 ## 🚀 Hackathon Submission: Gemini 3 Integration

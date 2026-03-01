@@ -12,6 +12,7 @@ Stop typing prompts. **Just say what you see.**
 
 ---
 
+
 ## 🚀 Hackathon Submission: Gemini 3 Integration
 
 This project is built explicitly to leverage the capabilities of the **Gemini 3 family**.
@@ -45,6 +46,8 @@ The speed and prompt adherence of Gemini 3 are critical for this "real-time conv
 *   **Voice AI**: [ElevenLabs](https://elevenlabs.io/) (React SDK)
 *   **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) & Framer Motion
 *   **Icons**: Lucide React
+
+<img width="640" height="640" alt="technology_stack_1772395896756" src="https://github.com/user-attachments/assets/694ef039-6588-4fbd-8f62-93c4aee8da2b" />
 
 ## 📦 Getting Started
 

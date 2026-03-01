@@ -1,5 +1,7 @@
 # Audio Gen Sapiens Sinteticos (Open Source) 🍌
 
+[Live Version](https://www.sapiensinteticos.com/imgen-sapiens)
+
 [![Built with Gemini 3](https://img.shields.io/badge/Built%20with-Gemini%203-blue?style=for-the-badge&logo=google-gemini)](https://ai.google.dev/)
 [![Powered by Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![ElevenLabs Voice](https://img.shields.io/badge/ElevenLabs-Voice%20AI-orange?style=for-the-badge)](https://elevenlabs.io/)
